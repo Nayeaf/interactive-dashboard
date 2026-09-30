@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - متجر إلكتروني</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- الرأس -->
+        <header class="header">
+            <h1>📊 لوحة التحكم - متجر إلكتروني</h1>
+            <p class="subtitle">تحليل المبيعات والأداء</p>
+        </header>
+
+        <!-- الفلاتر -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="monthFilter">الشهر:</label>
+                <select id="monthFilter">
+                    <option value="">جميع الأشهر</option>
+                    <option value="1">يناير</option>
+                    <option value="2">فبراير</option>
+                    <option value="3">مارس</option>
+                    <option value="4">أبريل</option>
+                    <option value="5">مايو</option>
+                    <option value="6">يونيو</option>
+                    <option value="7">يوليو</option>
+                    <option value="8">أغسطس</option>
+                    <option value="9">سبتمبر</option>
+                    <option value="10">أكتوبر</option>
+                    <option value="11">نوفمبر</option>
+                    <option value="12">ديسمبر</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="categoryFilter">الفئة:</label>
+                <select id="categoryFilter">
+                    <option value="">جميع الفئات</option>
+                    <option value="الإلكترونيات">الإلكترونيات</option>
+                    <option value="الملابس">الملابس</option>
+                    <option value="الكتب">الكتب</option>
+                    <option value="الرياضة">الرياضة</option>
+                    <option value="المنزل">المنزل</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="regionFilter">المنطقة:</label>
+                <select id="regionFilter">
+                    <option value="">جميع المناطق</option>
+                    <option value="الرياض">الرياض</option>
+                    <option value="جدة">جدة</option>
+                    <option value="الدمام">الدمام</option>
+                    <option value="الاحساء">الاحساء</option>
+                    <option value="الطائف">الطائف</option>
+                </select>
+            </div>
+
+            <button id="resetBtn" class="reset-btn">إعادة تعيين</button>
+        </div>
+
+        <!-- بطاقات KPI -->
+        <div class="kpi-cards">
+            <div class="card kpi">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-content">
+                    <h3>إجمالي المبيعات</h3>
+                    <p id="totalSales" class="kpi-value">0 ر.س</p>
+                    <span id="salesGrowth" class="kpi-growth">+0%</span>
+                </div>
+            </div>
+
+            <div class="card kpi">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-content">
+                    <h3>عدد الطلبات</h3>
+                    <p id="totalOrders" class="kpi-value">0</p>
+                    <span id="ordersGrowth" class="kpi-growth">+0%</span>
+                </div>
+            </div>
+
+            <div class="card kpi">
+                <div class="kpi-icon">💵</div>
+                <div class="kpi-content">
+                    <h3>متوسط قيمة الطلب</h3>
+                    <p id="avgOrderValue" class="kpi-value">0 ر.س</p>
+                    <span class="kpi-info">لكل طلب</span>
+                </div>
+            </div>
+
+            <div class="card kpi">
+                <div class="kpi-icon">✅</div>
+                <div class="kpi-content">
+                    <h3>معدل الإنجاز</h3>
+                    <p id="completionRate" class="kpi-value">0%</p>
+                    <span class="kpi-info">طلبات مكتملة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- الرسوم البيانية -->
+        <div class="charts-grid">
+            <!-- المبيعات عبر الزمن -->
+            <div class="card chart-card">
+                <h3>📈 المبيعات الشهرية</h3>
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+
+            <!-- المبيعات حسب الفئة -->
+            <div class="card chart-card">
+                <h3>🏷️ المبيعات حسب الفئة</h3>
+                <canvas id="categoryChart"></canvas>
+            </div>
+
+            <!-- المبيعات حسب المنطقة -->
+            <div class="card chart-card">
+                <h3>🗺️ المبيعات حسب المنطقة</h3>
+                <canvas id="regionChart"></canvas>
+            </div>
+
+            <!-- أفضل المنتجات -->
+            <div class="card chart-card">
+                <h3>⭐ أفضل 5 منتجات</h3>
+                <canvas id="topProductsChart"></canvas>
+            </div>
+
+            <!-- حالة الطلبات -->
+            <div class="card chart-card">
+                <h3>📊 حالة الطلبات</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+
+            <!-- طرق الدفع -->
+            <div class="card chart-card">
+                <h3>💳 طرق الدفع</h3>
+                <canvas id="paymentChart"></canvas>
+            </div>
+        </div>
+
+        <!-- جدول البيانات -->
+        <div class="card data-table-card">
+            <h3>📋 آخر الطلبات</h3>
+            <div class="table-scroll">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>التاريخ</th>
+                            <th>المنتج</th>
+                            <th>الفئة</th>
+                            <th>المنطقة</th>
+                            <th>القيمة</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
